@@ -264,17 +264,28 @@ func ClearCache() {
 
 func componentDir(instance base.KComponent) string {
 	koDataDir := os.Getenv(KoEnvKey)
+	fmt.Println("check on the KoEnvKey")
+	fmt.Println(koDataDir)
+	koDataDir = "/var/run/ko"
 	switch instance.(type) {
 	case *v1beta1.KnativeServing:
+		fmt.Println("serving")
+		fmt.Println(filepath.Join(koDataDir, "knative-serving"))
 		return filepath.Join(koDataDir, "knative-serving")
 	case *v1beta1.KnativeEventing:
+		fmt.Println("eventing")
+		fmt.Println(filepath.Join(koDataDir, "knative-eventing"))
 		return filepath.Join(koDataDir, "knative-eventing")
 	}
+	fmt.Println("no path")
 	return ""
 }
 
 func componentIngressDir() string {
 	koDataDir := os.Getenv(KoEnvKey)
+	fmt.Println("check on the KoEnvKey")
+	fmt.Println(koDataDir)
+	koDataDir = "/var/run/ko"
 	return filepath.Join(koDataDir, "ingress")
 }
 
@@ -365,19 +376,28 @@ func allReleases(instance base.KComponent) ([]string, error) {
 // available under kodata directory for a certain path.
 func allReleasesUnderPath(pathname string) ([]string, error) {
 	fileList, err := os.ReadDir(pathname)
+	fmt.Println("the path is ")
+	fmt.Println(pathname)
 	if err != nil {
 		return nil, err
 	}
 
 	releaseTags := make([]string, 0, len(fileList))
+	fmt.Println("the size is ")
+	fmt.Println(len(fileList))
 	for _, file := range fileList {
 		name := path.Join(pathname, file.Name())
+		fmt.Println("the name is ")
+		fmt.Println(name)
 		pathDirOrFile, err := os.Stat(name)
 		if err != nil {
 			return nil, err
 		}
 		if pathDirOrFile.IsDir() {
+			fmt.Println("this is a dir")
 			releaseTags = append(releaseTags, file.Name())
+		} else {
+			fmt.Println("the name is a file")
 		}
 	}
 	if len(releaseTags) == 0 {
