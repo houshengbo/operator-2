@@ -264,6 +264,9 @@ func ClearCache() {
 
 func componentDir(instance base.KComponent) string {
 	koDataDir := os.Getenv(KoEnvKey)
+	fmt.Println("check on the KoEnvKey")
+	fmt.Println(koDataDir)
+	koDataDir = "/var/run/ko"
 	switch instance.(type) {
 	case *v1beta1.KnativeServing:
 		return filepath.Join(koDataDir, "knative-serving")
@@ -275,6 +278,9 @@ func componentDir(instance base.KComponent) string {
 
 func componentIngressDir() string {
 	koDataDir := os.Getenv(KoEnvKey)
+	fmt.Println("check on the KoEnvKey")
+	fmt.Println(koDataDir)
+	koDataDir = "/var/run/ko"
 	return filepath.Join(koDataDir, "ingress")
 }
 
